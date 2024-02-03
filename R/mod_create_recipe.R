@@ -35,11 +35,13 @@ mod_create_recipe_ui <- function(id) {
         bslib::card_header("Directions"),
         mod_table_steps_ui(ns("steps_new_recipe"))
       ),
-      col_widths = c(4, 4, 4,
-                     6, 6),
+      col_widths = c(
+        4, 4, 4,
+        6, 6
+      ),
       row_heights = c(8, 4)
     )
-)
+  )
 }
 
 #' show_recipe Server Functions
@@ -48,7 +50,7 @@ mod_create_recipe_ui <- function(id) {
 mod_create_recipe_server <- function(id, con, rv) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-  # Inputs whose values are based on database values ------------------------
+    # Inputs whose values are based on database values ------------------------
     output$cat_db <- renderUI({
       cats <- dplyr::tbl(con, "categories") |>
         dplyr::distinct(category) |>
@@ -70,19 +72,21 @@ mod_create_recipe_server <- function(id, con, rv) {
       refresh = NULL
     )
 
-  # Process user input ------------------------------------------------------
-   new_ing <- mod_form_ingredient_server(
+    # Process user input ------------------------------------------------------
+    new_ing <- mod_form_ingredient_server(
       id = "new_recipe_add_ing",
-      con = con)
+      con = con
+    )
 
     observeEvent(new_ing$submit(), {
-      if(is.data.frame(new_ing$new_data())) {
+      if (is.data.frame(new_ing$new_data())) {
         if (nrow(rv_new_recipe$data_all_ing) > 0) {
           rv_new_recipe$data_all_ing <- new_ing$new_data()
         } else {
           rv_new_recipe$data_all_ing <- dplyr::bind_rows(
             rv_new_recipe$data_all_ing,
-            new_ing$new_data())
+            new_ing$new_data()
+          )
         }
         rv_new_recipe$refresh <- rnorm(2)
       }
@@ -90,14 +94,14 @@ mod_create_recipe_server <- function(id, con, rv) {
 
     new_step <- mod_form_step_server(
       id = "new_recipe_add_step",
-      con = con)
+      con = con
+    )
 
     observeEvent(new_step$submit(), {
-      if(is.data.frame(new_step$new_data())) {
+      if (is.data.frame(new_step$new_data())) {
         if (nrow(rv_new_recipe$data_all_steps) == 0) {
           rv_new_recipe$data_all_steps <- new_step$new_data()
         } else {
-
           new_step_idx <- new_step$new_data()$step
 
           rv_new_recipe$data_all_steps <- rv_new_recipe$data_all_steps |>
@@ -115,15 +119,16 @@ mod_create_recipe_server <- function(id, con, rv) {
       }
     })
 
-  # Tables ------------------------------------------------------------------
+    # Tables ------------------------------------------------------------------
     rv_new_recipe <- mod_table_ingr_server("ingredients_new_recipe", rv_new_recipe, con)
-    rv_new_recipe <-  mod_table_steps_server("steps_new_recipe", rv_new_recipe)
+    rv_new_recipe <- mod_table_steps_server("steps_new_recipe", rv_new_recipe)
     # Save recipe -------------------------------------------------------------
     observeEvent(input$save_recipe, {
-
-      shinyFeedback::feedbackDanger("name",
-                                    nchar(input$name) == 0,
-                                    "Please provide a recipe name.")
+      shinyFeedback::feedbackDanger(
+        "name",
+        nchar(input$name) == 0,
+        "Please provide a recipe name."
+      )
       req(input$name)
 
       recipes_in_db <- dplyr::tbl(con, "recipe_metadata") |>
@@ -137,16 +142,20 @@ mod_create_recipe_server <- function(id, con, rv) {
 
       req(!(input$name %in% recipes_in_db))
 
-      shinyFeedback::feedbackDanger("src", nchar(input$src) == 0,
-                                    "Please provide a source.")
+      shinyFeedback::feedbackDanger(
+        "src", nchar(input$src) == 0,
+        "Please provide a source."
+      )
       req(input$src)
 
-      shinyFeedback::feedbackDanger("ser",
-                                    is.na(input$ser),
-                                    "Please provide a number of servings.")
+      shinyFeedback::feedbackDanger(
+        "ser",
+        is.na(input$ser),
+        "Please provide a number of servings."
+      )
       req(input$ser)
 
-      if(nrow(rv_new_recipe$data_all_ing) == 0) {
+      if (nrow(rv_new_recipe$data_all_ing) == 0) {
         shinyalert::shinyalert(
           title = "Oops",
           text = "To create a new recipe you need to add at least one ingredient.",
@@ -155,7 +164,7 @@ mod_create_recipe_server <- function(id, con, rv) {
       }
       req(nrow(rv_new_recipe$data_all_ing) > 0)
 
-      if(nrow(rv_new_recipe$data_all_steps) == 0) {
+      if (nrow(rv_new_recipe$data_all_steps) == 0) {
         shinyalert::shinyalert(
           title = "Oops",
           text = "To create a new recipe you need to add at least one step.",
@@ -171,10 +180,12 @@ mod_create_recipe_server <- function(id, con, rv) {
         duration = input$dur,
         category = input$cat
       )
-      update_database(rv_new_recipe$data_all_ing,
-                      rv_new_recipe$data_all_steps,
-                      rv_new_recipe$data_meta,
-                      con)
+      update_database(
+        rv_new_recipe$data_all_ing,
+        rv_new_recipe$data_all_steps,
+        rv_new_recipe$data_meta,
+        con
+      )
       m <- glue::glue("Recipe {input$name} was added to the database.")
       shinyalert::shinyalert(
         title = "Hooray!",

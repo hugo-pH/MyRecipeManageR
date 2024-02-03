@@ -3,7 +3,6 @@ update_database <- function(
     df_steps,
     df_meta,
     con) {
-
   meta_append <- append_table_recipe_metadata(
     df_meta,
     con = con,

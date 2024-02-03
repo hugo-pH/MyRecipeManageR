@@ -31,20 +31,20 @@ mod_table_ingr_server <- function(id, rv, con) {
       row_to_delete <- ns("row_to_delete_ing")
 
       js <- paste0(
-      "function(rowInfo, column) {
+        "function(rowInfo, column) {
         if (column.id !== 'delete' && column.id !== 'edit') {
           return
         }
         if (window.Shiny && column.id == 'edit') {
-          Shiny.setInputValue('",row_to_edit, "' , { index: rowInfo.index + 1 })
-          Shiny.setInputValue('",edit, "' , { event: Math.random() })
+          Shiny.setInputValue('", row_to_edit, "' , { index: rowInfo.index + 1 })
+          Shiny.setInputValue('", edit, "' , { event: Math.random() })
         }
         if (window.Shiny && column.id == 'delete') {
-          Shiny.setInputValue('",row_to_delete, "' , { index: rowInfo.index + 1 })
-          Shiny.setInputValue('",delete, "' , { event: Math.random() })
+          Shiny.setInputValue('", row_to_delete, "' , { index: rowInfo.index + 1 })
+          Shiny.setInputValue('", delete, "' , { event: Math.random() })
         }
       }"
-    )
+      )
       reactable::reactable(
         rv$data_all_ing |>
           tibble::add_column(edit = NA, .before = 1) |>
@@ -59,17 +59,23 @@ mod_table_ingr_server <- function(id, rv, con) {
             name = "",
             width = 25,
             sortable = FALSE,
-            cell = function() shiny::icon("trash",
-                                          class = "fas",
-                                          style = "color: red")
-            ),
+            cell = function() {
+              shiny::icon("trash",
+                class = "fas",
+                style = "color: red"
+              )
+            }
+          ),
           edit = reactable::colDef(
             name = "",
             width = 25,
             sortable = FALSE,
-            cell = function() shiny::icon("pen-to-square",
-                                          class = "fas",
-                                          style = "color: green")
+            cell = function() {
+              shiny::icon("pen-to-square",
+                class = "fas",
+                style = "color: green"
+              )
+            }
           )
         ),
         onClick = reactable::JS(js),
@@ -93,7 +99,7 @@ mod_table_ingr_server <- function(id, rv, con) {
     selected_data <- reactive({
       req(selected_ing$row)
       rv$data_all_ing |>
-            dplyr::slice(selected_ing$row)
+        dplyr::slice(selected_ing$row)
     })
 
     modified_ing <- reactive({
@@ -101,27 +107,29 @@ mod_table_ingr_server <- function(id, rv, con) {
       mod_form_ingredient_server(
         id = "update_recipe_edit_ing",
         selected_data = selected_data(),
-        con = con)
+        con = con
+      )
     })
 
     observeEvent(modified_ing()$submit(), {
-      if(is.data.frame(modified_ing()$new_data())) {
-        if(!identical(
-              modified_ing()$selected_data,
-              modified_ing()$new_data()
-              )
-          ) {
-            rv$data_all_ing <- rv$data_all_ing[-selected_ing$row, ]
+      if (is.data.frame(modified_ing()$new_data())) {
+        if (!identical(
+          modified_ing()$selected_data,
+          modified_ing()$new_data()
+        )
+        ) {
+          rv$data_all_ing <- rv$data_all_ing[-selected_ing$row, ]
 
-            rv$data_all_ing <- dplyr::bind_rows(rv$data_all_ing,
-                                                modified_ing()$new_data())
-          }
+          rv$data_all_ing <- dplyr::bind_rows(
+            rv$data_all_ing,
+            modified_ing()$new_data()
+          )
+        }
       }
       selected_ing$row <- NULL
     })
 
     observeEvent(input$delete_ing, {
-
       row_to_delete <- input$row_to_delete_ing$index
       if (nrow(rv$data_all_ing) > 0 & !is.null(row_to_delete)) {
         rv$data_all_ing <- rv$data_all_ing[-row_to_delete, ]

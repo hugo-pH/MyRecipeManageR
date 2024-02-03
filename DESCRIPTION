@@ -5,10 +5,23 @@ Authors@R: person('Hugo', 'Pineda Hernández', email = 'hugo.pineda.h@gmail.com'
 Description: This shiny app allows you to store and edit your recipe collection.
 License: MIT + file LICENSE
 Imports: 
+    bsicons,
+    bslib,
     config (>= 0.3.2),
+    DBI,
+    dplyr,
+    glue,
     golem (>= 0.4.1),
     pkgload,
-    shiny (>= 1.8.0)
+    purrr,
+    reactable,
+    RSQLite,
+    shiny (>= 1.8.0),
+    shinyalert,
+    shinyFeedback,
+    stringr,
+    tibble,
+    tidyselect
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

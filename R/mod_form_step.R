@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_form_step_ui <- function(id, modal){
+mod_form_step_ui <- function(id, modal) {
   ns <- NS(id)
 
   if (modal) {
@@ -18,7 +18,8 @@ mod_form_step_ui <- function(id, modal){
         ),
         easyClose = TRUE,
         footer = NULL
-      ))
+      )
+    )
   } else {
     tagList(
       uiOutput(ns("inputs"))
@@ -29,12 +30,11 @@ mod_form_step_ui <- function(id, modal){
 #' step_form Server Functions
 #'
 #' @noRd
-mod_form_step_server <- function(id, selected_data = NULL, con){
-  moduleServer( id, function(input, output, session){
+mod_form_step_server <- function(id, selected_data = NULL, con) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
     # Inputs whose values are based on database values ------------------------
     output$inputs <- renderUI({
-
       tagList(
         h3("Add step"),
         selectizeInput(
@@ -42,7 +42,8 @@ mod_form_step_server <- function(id, selected_data = NULL, con){
           label = "Step order:",
           choices = 1:20,
           selected = selected_data$step,
-          options = list(create = TRUE)),
+          options = list(create = TRUE)
+        ),
         textAreaInput(
           inputId = ns("desc"),
           label = "Description:",
@@ -52,7 +53,8 @@ mod_form_step_server <- function(id, selected_data = NULL, con){
         ),
         actionButton(
           inputId = ns("submit"),
-          label = "Submit")
+          label = "Submit"
+        )
       )
     })
 
@@ -60,12 +62,16 @@ mod_form_step_server <- function(id, selected_data = NULL, con){
       step <- input$step |> as.integer()
       description <- input$desc
       # we want to make sure users provided these inputs
-      shinyFeedback::feedbackDanger(inputId = "step",
-                                    is.na(input$step),
-                                    "Please select a value")
-      shinyFeedback::feedbackDanger(inputId = "desc",
-                                    nchar(input$desc) == 0,
-                                    "Please select a value")
+      shinyFeedback::feedbackDanger(
+        inputId = "step",
+        is.na(input$step),
+        "Please select a value"
+      )
+      shinyFeedback::feedbackDanger(
+        inputId = "desc",
+        nchar(input$desc) == 0,
+        "Please select a value"
+      )
       req(step, description)
       removeModal()
 
@@ -81,6 +87,5 @@ mod_form_step_server <- function(id, selected_data = NULL, con){
       selected_data = selected_data,
       submit = reactive(input$submit)
     )
-
   })
 }

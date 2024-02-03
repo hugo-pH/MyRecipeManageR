@@ -11,7 +11,6 @@ mod_table_steps_ui <- function(id) {
   ns <- NS(id)
   tagList(
     reactable::reactableOutput(ns("tbl_steps_output"))
-
   )
 }
 
@@ -39,41 +38,48 @@ mod_table_steps_server <- function(id, rv) {
           return
         }
         if (window.Shiny && column.id == 'edit') {
-          Shiny.setInputValue('",row_to_edit, "' , { index: rowInfo.index + 1 })
-          Shiny.setInputValue('",edit, "' , { event: Math.random() })
+          Shiny.setInputValue('", row_to_edit, "' , { index: rowInfo.index + 1 })
+          Shiny.setInputValue('", edit, "' , { event: Math.random() })
         }
         if (window.Shiny && column.id == 'delete') {
-          Shiny.setInputValue('",row_to_delete, "' , { index: rowInfo.index + 1 })
-          Shiny.setInputValue('",delete, "' , { event: Math.random() })
+          Shiny.setInputValue('", row_to_delete, "' , { index: rowInfo.index + 1 })
+          Shiny.setInputValue('", delete, "' , { event: Math.random() })
         }
       }"
       )
 
       reactable::reactable(
-
         rv$data_all_steps |>
           tibble::add_column(edit = NA, .before = 1) |>
           tibble::add_column(delete = NA, .after = "description"),
         defaultPageSize = 50,
         columns = list(
           description = reactable::colDef(name = "Description"),
-          step = reactable::colDef(name = "Step", width = 75,
-                                   sortable = TRUE),
+          step = reactable::colDef(
+            name = "Step", width = 75,
+            sortable = TRUE
+          ),
           delete = reactable::colDef(
             name = "",
             width = 25,
             sortable = FALSE,
-            cell = function() shiny::icon("trash",
-                                          class = "fas",
-                                          style = "color: red")
+            cell = function() {
+              shiny::icon("trash",
+                class = "fas",
+                style = "color: red"
+              )
+            }
           ),
           edit = reactable::colDef(
             name = "",
             width = 25,
             sortable = FALSE,
-            cell = function() shiny::icon("pen-to-square",
-                                          class = "fas",
-                                          style = "color: green")
+            cell = function() {
+              shiny::icon("pen-to-square",
+                class = "fas",
+                style = "color: green"
+              )
+            }
           )
         ),
         onClick = reactable::JS(js),
@@ -90,8 +96,10 @@ mod_table_steps_server <- function(id, rv) {
     )
 
     observeEvent(input$edit_step, {
-      mod_form_step_ui(id = ns("update_recipe_edit_step"),
-                       modal = TRUE)
+      mod_form_step_ui(
+        id = ns("update_recipe_edit_step"),
+        modal = TRUE
+      )
       selected_step$row <- input$row_to_edit_step$index
     })
 
@@ -111,28 +119,30 @@ mod_table_steps_server <- function(id, rv) {
     })
 
     observeEvent(modified_step()$submit(), {
-
-      if(is.data.frame(modified_step()$new_data())) {
-        if(!identical(
+      if (is.data.frame(modified_step()$new_data())) {
+        if (!identical(
           modified_step()$selected_data,
           modified_step()$new_data()
-          )
+        )
         ) {
-          current_step <- rv$data_all_steps  |>
+          current_step <- rv$data_all_steps |>
             dplyr::slice(selected_step$row) |>
             dplyr::pull(step)
           new_step <- modified_step()$new_data()$step
           rv$data_all_steps <- rv$data_all_steps[-selected_step$row, ]
 
-          if(current_step != new_step) {
+          if (current_step != new_step) {
             # If the user changed the step (order) we need to adjust
             # the order of the other steps
             direction_of_change <- ifelse(
               new_step > current_step,
               -1,
-              1)
-            steps_to_change <- seq(new_step,
-                                   current_step)
+              1
+            )
+            steps_to_change <- seq(
+              new_step,
+              current_step
+            )
             idxs_to_change <- which(rv$data_all_steps$step %in% steps_to_change)
 
             rv$data_all_steps$step[idxs_to_change] <- rv$data_all_steps$step[idxs_to_change] + direction_of_change

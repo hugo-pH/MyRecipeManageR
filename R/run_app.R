@@ -8,15 +8,13 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 run_app <- function(
-  onStart = NULL,
-  options = list(),
-  enableBookmarking = NULL,
-  uiPattern = "/",
-  db_path = NULL
-) {
-
+    onStart = NULL,
+    options = list(),
+    enableBookmarking = NULL,
+    uiPattern = "/",
+    db_path = NULL) {
   # if no db is provided, use the test database
-  if(is.null(db_path)) {
+  if (is.null(db_path)) {
     db_path <- system.file("db", "test-db.sqlite", package = "MyRecipeManageR")
   }
 

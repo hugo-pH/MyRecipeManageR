@@ -11,8 +11,10 @@ mod_delete_recipe_ui <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(wellPanel(
     uiOutput(ns("recipes")),
-    actionButton(inputId = ns("delete"),
-                 label = "Delete recipe")
+    actionButton(
+      inputId = ns("delete"),
+      label = "Delete recipe"
+    )
   )))
 }
 
@@ -29,8 +31,10 @@ mod_delete_recipe_server <- function(id, con, rv) {
         dplyr::distinct(recipe_name) |>
         dplyr::pull(recipe_name)
 
-      selectInput(ns("selected_recipe"), "Choose a recipe",
-                  recipes)
+      selectInput(
+        ns("selected_recipe"), "Choose a recipe",
+        recipes
+      )
     })
 
     observeEvent(input$delete, {
@@ -41,7 +45,9 @@ mod_delete_recipe_server <- function(id, con, rv) {
           footer = tagList(
             actionButton(ns("cancel"), "Cancel"),
             actionButton(ns("ok"),
-                         "Delete", class = "btn btn-danger")
+              "Delete",
+              class = "btn btn-danger"
+            )
           )
         )
       )
@@ -63,7 +69,8 @@ mod_delete_recipe_server <- function(id, con, rv) {
                     FROM recipe_metadata
                     WHERE recipe_id = {recipe_id}
                                      ",
-                    .con = con)
+        .con = con
+      )
       del <- DBI::dbExecute(con, delete_query)
       rv$refresh <- stats::rnorm(2)
       removeModal()
@@ -80,8 +87,6 @@ mod_delete_recipe_server <- function(id, con, rv) {
           type = "error"
         )
       }
-
-
     })
   })
 }
