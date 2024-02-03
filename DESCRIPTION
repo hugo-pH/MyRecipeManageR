@@ -1,0 +1,21 @@
+Package: MyRecipeManageR
+Title: A shiny app to manage your recipes
+Version: 0.1
+Authors@R: person('Hugo', 'Pineda Hernández', email = 'hugo.pineda.h@gmail.com', role = c('cre', 'aut'))
+Description: This shiny app allows you to store and edit your recipe collection.
+License: MIT + file LICENSE
+Imports: 
+    config (>= 0.3.2),
+    golem (>= 0.4.1),
+    pkgload,
+    shiny (>= 1.8.0)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+URL: https://github.com/hugo-pH/MyRecipeManageR.git
+BugReports: https://github.com/hugo-pH/MyRecipeManageR.git/issues
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
