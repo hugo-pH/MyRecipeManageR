@@ -9,7 +9,8 @@ run_app(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  db_path = NULL
+  db_path = NULL,
+  reports_dir = "./reports"
 )
 }
 \arguments{
