@@ -12,6 +12,11 @@ mod_show_recipe_ui <- function(id) {
   tagList(
     bslib::page_sidebar(
       sidebar = bslib::sidebar(
+      numericInput(ns("new_ser"), "New number of servings:", value = NULL),
+      actionButton(
+        inputId = ns("change_ser"),
+        label = "Change number of servings"
+      ),
         uiOutput(ns("siderbar")),
         actionButton(
           inputId = ns("add_ing"),
@@ -114,7 +119,9 @@ mod_show_recipe_server <- function(id, con, rv) {
       p(source, style = "font-size: 30px;")
     })
     output$created_on <- renderText({
+
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       stringr::str_extract(
         string = rv$data_meta$created_on,
         pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
@@ -122,28 +129,35 @@ mod_show_recipe_server <- function(id, con, rv) {
     })
     output$recipe_name <- renderText({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       rv$data_meta$recipe_name
     })
     output$servings <- renderText({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       rv$data_meta$servings
     })
     output$duration <- renderText({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       rv$data_meta$duration
     })
     output$servings <- renderText({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       rv$data_meta$servings
     })
 
     output$category <- renderText({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+      rv$refresh
       rv$data_meta$category
     })
 
     output$siderbar <- renderUI({
       validate(need(nrow(rv$data_meta) > 0, "Select a recipe."))
+
+      rv$refresh
 
       d <- rv$data_meta
       name <- d$recipe_name
@@ -214,6 +228,25 @@ mod_show_recipe_server <- function(id, con, rv) {
         dplyr::collect()
     })
 
+    observeEvent(input$change_ser, {
+
+      req(rv$selected_recipe_id)
+      shinyFeedback::feedbackDanger(
+        "new_ser",
+        is.na(input$new_ser),
+        "Please, provide a new number of servings."
+      )
+      req(input$new_ser)
+      req(nrow(rv$data_all_ing) > 0)
+
+      current_servings <- rv$data_meta$servings
+      new_servings <- input$new_ser
+      rv$data_all_ing <- rv$data_all_ing |>
+        dplyr::mutate(
+          amount = (new_servings * amount) / current_servings
+        )
+    })
+
     # Tables ------------------------------------------------------------------
     rv <- mod_table_ingr_server("ingr", rv, con)
     rv <- mod_table_steps_server("step", rv)
@@ -221,18 +254,23 @@ mod_show_recipe_server <- function(id, con, rv) {
     # Update recipe -----------------------------------------------------------
 
     observeEvent(input$update_recipe, {
+
+      servings <- ifelse(!is.na(input$new_ser),
+                         input$new_ser,
+                         input$ser)
+
       selected_recipe_id <- rv$selected_recipe_id
       new_name <- input$name
       current_recipe <- rv$data_meta$recipe_name
       new_meta <- data.frame(
         recipe_name = new_name,
         source = input$src,
-        servings = input$ser,
+        servings = servings,
         duration = input$dur,
         category = input$cat
       )
 
-      ## Controls ----------------------------------------------------------------
+      ## Controls -------------------------------------------------------------
       shinyFeedback::feedbackDanger(
         "name",
         nchar(new_name) == 0,
