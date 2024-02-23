@@ -12,11 +12,16 @@ run_app <- function(
     options = list(),
     enableBookmarking = NULL,
     uiPattern = "/",
-    db_path = NULL) {
+    db_path = NULL,
+    reports_dir = "./reports") {
   # if no db is provided, use the test database
   if (is.null(db_path)) {
     db_path <- system.file("db", "test-db.sqlite", package = "MyRecipeManageR")
   }
+  if(!dir.exists(reports_dir)){
+    dir.create(reports_dir)
+  }
+
 
   with_golem_options(
     app = shinyApp(
@@ -28,7 +33,8 @@ run_app <- function(
       uiPattern = uiPattern
     ),
     golem_opts = list(
-      db_path = db_path
+      db_path = db_path,
+      reports_dir = reports_dir
     )
   )
 }

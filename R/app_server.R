@@ -69,5 +69,6 @@ app_server <- function(input, output, session) {
     mod_show_recipe_server("show_recipe", con = con, rv = rv)
     mod_create_recipe_server("create_recipe", con = con, rv = rv)
     mod_delete_recipe_server("delete_recipe", con = con, rv = rv)
+    mod_shopping_list_server("shopping_list", con = con, rv = rv)
   }
 }

@@ -33,6 +33,10 @@ app_ui <- function(request) {
       bslib::nav_panel(
         title = "Delete recipe",
         mod_delete_recipe_ui("delete_recipe")
+      ),
+      bslib::nav_panel(
+        title = "Create shopping list",
+        mod_shopping_list_ui("shopping_list")
       )
     )
   )
