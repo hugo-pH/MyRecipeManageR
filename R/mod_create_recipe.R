@@ -80,7 +80,7 @@ mod_create_recipe_server <- function(id, con, rv) {
 
     observeEvent(new_ing$submit(), {
       if (is.data.frame(new_ing$new_data())) {
-        if (nrow(rv_new_recipe$data_all_ing) > 0) {
+        if (nrow(rv_new_recipe$data_all_ing) == 0) {
           rv_new_recipe$data_all_ing <- new_ing$new_data()
         } else {
           rv_new_recipe$data_all_ing <- dplyr::bind_rows(
