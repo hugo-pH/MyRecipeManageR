@@ -2,21 +2,15 @@
 title: "Shopping list"
 date: today
 format: 
-  html: 
+  pdf: 
     echo: false
-    embed-resources: true
 params: 
   recipes: "NA"
   db_path: "NA"
 ---
 
-
 ```{r}
-print(params$db_path)
-```
-
-```{r}
-  con <- DBI::dbConnect(
+con <- DBI::dbConnect(
     RSQLite::SQLite(),
     params$db_path
   )
@@ -45,8 +39,18 @@ data_all_recipes <- dplyr::tbl(con, "recipe_metadata") |>
         dplyr::collect()
 ```
 
+### Selected recipes
 
-## List of ingredients needed for all the selected recipes
+```{r}
+data.frame(
+  recipe = params$recipes
+  ) |> 
+  kableExtra::kbl("latex", booktabs = T) |> 
+  kableExtra::kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+
+### List of ingredients needed for the selected recipes
 
 ```{r}
  data_all_recipes |>
@@ -54,8 +58,8 @@ data_all_recipes <- dplyr::tbl(con, "recipe_metadata") |>
     .by = c(ingredient, unit),
     amount = sum(amount)
   ) |> 
-  kableExtra::kbl("html") |> 
-  kableExtra::kable_styling()
+  kableExtra::kbl("latex", booktabs = T) |> 
+  kableExtra::kable_styling(latex_options = c("striped", "hold_position"))
   
 ```
 
