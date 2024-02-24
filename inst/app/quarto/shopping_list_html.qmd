@@ -1,0 +1,66 @@
+---
+title: "Shopping list"
+date: today
+format: 
+  html: 
+    echo: false
+    embed-resources: true
+params: 
+  recipes: "NA"
+  db_path: "NA"
+---
+
+```{r}
+con <- DBI::dbConnect(
+    RSQLite::SQLite(),
+    params$db_path
+  )
+```
+
+```{r}
+selected_recipe_names <- params$recipes
+```
+
+```{r}
+data_all_recipes <- dplyr::tbl(con, "recipe_metadata") |>
+        dplyr::filter(recipe_name %in% selected_recipe_names) |>
+        dplyr::inner_join(dplyr::tbl(con, "ingredients_in_recipes"),
+          by = "recipe_id",
+          copy = TRUE
+        ) |>
+        dplyr::inner_join(dplyr::tbl(con, "ingredients"),
+          by = "ingredient_id",
+          copy = TRUE
+        ) |>
+        dplyr::inner_join(dplyr::tbl(con, "units"),
+          by = "unit_id",
+          copy = TRUE
+        ) |>
+        dplyr::select(recipe_name, ingredient, amount, unit, preparation) |>
+        dplyr::collect()
+```
+
+### Selected recipes
+
+```{r}
+data.frame(
+  recipe = params$recipes
+  ) |> 
+  kableExtra::kbl("html") |> 
+  kableExtra::kable_styling()
+```
+
+
+### List of ingredients needed for the selected recipes
+
+```{r}
+ data_all_recipes |>
+  dplyr::summarise(
+    .by = c(ingredient, unit),
+    amount = sum(amount)
+  ) |> 
+  kableExtra::kbl("html") |> 
+  kableExtra::kable_styling()
+  
+```
+
