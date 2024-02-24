@@ -35,3 +35,8 @@ To start the app, run:
 ``` r
 run_app(db_path = "PATH/TO/YOUR/SQLITE-DB.sqlite")
 ```
+
+## Demo
+
+A demo version of the app is hosted at:
+<https://hugo-ph.shinyapps.io/myrecipemanager/>
