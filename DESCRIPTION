@@ -1,6 +1,6 @@
 Package: MyRecipeManageR
 Title: A shiny app to manage your recipes
-Version: 0.2
+Version: 0.3
 Authors@R: person('Hugo', 'Pineda Hernández', email = 'hugo.pineda.h@gmail.com', role = c('cre', 'aut'))
 Description: This shiny app allows you to store and edit your recipe collection.
 License: MIT + file LICENSE
@@ -13,6 +13,7 @@ Imports:
     dplyr,
     glue,
     golem (>= 0.4.1),
+    kableExtra,
     pkgload,
     purrr,
     reactable,
