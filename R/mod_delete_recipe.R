@@ -9,13 +9,18 @@
 #' @importFrom shiny NS tagList
 mod_delete_recipe_ui <- function(id) {
   ns <- NS(id)
-  tagList(fluidRow(wellPanel(
-    uiOutput(ns("recipes")),
-    actionButton(
-      inputId = ns("delete"),
-      label = "Delete recipe"
-    )
-  )))
+  bslib::page_fillable(
+    bslib::layout_columns(
+      bslib::card(
+        uiOutput(ns("recipes")),
+        actionButton(
+          inputId = ns("delete"),
+          label = "Delete recipe",
+          width = "20%"
+          )
+        )
+      )
+  )
 }
 
 #' delete_recipe Server Functions
@@ -33,7 +38,8 @@ mod_delete_recipe_server <- function(id, con, rv) {
 
       selectInput(
         ns("selected_recipe"), "Choose a recipe",
-        recipes
+        recipes,
+        width = "20%"
       )
     })
 
