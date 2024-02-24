@@ -9,7 +9,10 @@
 #' @importFrom shiny NS tagList
 mod_shopping_list_ui <- function(id){
   ns <- NS(id)
+  waiter::waiter_set_theme(html = waiter::spin_3())
+
   bslib::page_fillable(
+    waiter::useWaiter(),
     bslib::layout_column_wrap(
       bslib::card(
         bslib::card_header("Selecting recipes"),
@@ -40,6 +43,10 @@ mod_shopping_list_server <- function(id, con, rv) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    w <- waiter::Waiter$new(
+      color = waiter::transparent(.9),
+    )
+
     output$recipes <- renderUI({
       rv$refresh
       recipes <- dplyr::tbl(con, "recipe_metadata") |>
@@ -54,9 +61,21 @@ mod_shopping_list_server <- function(id, con, rv) {
       )
     })
 
+
+
     output$render_pdf <- downloadHandler(
       filename = "shopping_list_pdf.pdf",
       content = function(file) {
+
+        if(is.null(input$selected_recipe)){
+          shinyalert::shinyalert(
+            title = "Oops",
+            text = "You did not select any recipe. An empty file will be downloaded.",
+            type = "error"
+          )
+        } else {
+          w$show()
+        }
 
         file_name <- "shopping_list_pdf"
 
@@ -79,12 +98,26 @@ mod_shopping_list_server <- function(id, con, rv) {
         file.copy(
           file.path(reports_dir, paste0(file_name, ".pdf"))
           , file)
+
+        if(!is.null(input$selected_recipe)){
+          w$hide()
+        }
       }
     )
 
     output$render_html <- downloadHandler(
       filename = "shopping_list_html.html",
       content = function(file) {
+
+        if(is.null(input$selected_recipe)){
+          shinyalert::shinyalert(
+            title = "Oops",
+            text = "You did not select any recipe. An empty file will be downloaded.",
+            type = "error"
+          )
+        } else {
+          w$show()
+        }
 
         file_name <- "shopping_list_html"
 
@@ -107,6 +140,10 @@ mod_shopping_list_server <- function(id, con, rv) {
         file.copy(
           file.path(reports_dir, paste0(file_name, ".html"))
           , file)
+
+        if(!is.null(input$selected_recipe)){
+          w$hide()
+        }
       }
     )
 

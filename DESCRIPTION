@@ -23,7 +23,8 @@ Imports:
     shinyFeedback,
     stringr,
     tibble,
-    tidyselect
+    tidyselect,
+    waiter
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
