@@ -5,13 +5,26 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  con <- DBI::dbConnect(
-    RSQLite::SQLite(),
-    golem::get_golem_options("db_path")
-  )
 
+  db_path <- golem::get_golem_options("db_path")
+  # if no db is provided, use an empty database
+  if(is.null(db_path)) {
+    con <- pool::dbPool(RSQLite::SQLite(), dbname = ":memory:")
+
+    create_database(con,
+                    fs::path_package("sql",
+                                     "create_database.sql",
+                                     package = "MyRecipeManageR")
+                    )
+
+  } else {
+    con <- pool::dbPool(
+      drv = RSQLite::SQLite(),
+      dbname = db_path
+    )
+  }
   onStop(function() {
-    DBI::dbDisconnect(con)
+    pool::poolClose(con)
   })
 
   # Reactive object ---------------------------------------------------------
@@ -71,4 +84,6 @@ app_server <- function(input, output, session) {
     mod_delete_recipe_server("delete_recipe", con = con, rv = rv)
     mod_shopping_list_server("shopping_list", con = con, rv = rv)
   }
+
+  exportTestValues(db_tables = db_tables)
 }

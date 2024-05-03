@@ -1,0 +1,503 @@
+{
+  "input": {
+    "create_recipe-cat": "main",
+    "create_recipe-dur": "3h",
+    "create_recipe-ingredients_new_recipe-tbl_ing_output__reactable__page": 1,
+    "create_recipe-ingredients_new_recipe-tbl_ing_output__reactable__pageSize": 50,
+    "create_recipe-ingredients_new_recipe-tbl_ing_output__reactable__pages": 1,
+    "create_recipe-ingredients_new_recipe-tbl_ing_output__reactable__selected": null,
+    "create_recipe-ingredients_new_recipe-tbl_ing_output__reactable__sorted": null,
+    "create_recipe-name": "a test recipe",
+    "create_recipe-new_recipe_add_ing-amount": 2,
+    "create_recipe-new_recipe_add_ing-ing": "onion",
+    "create_recipe-new_recipe_add_ing-prep": "cut in slices",
+    "create_recipe-new_recipe_add_ing-submit": 2,
+    "create_recipe-new_recipe_add_ing-unit": "unit",
+    "create_recipe-new_recipe_add_step-desc": "The second step",
+    "create_recipe-new_recipe_add_step-step": "2",
+    "create_recipe-new_recipe_add_step-submit": 2,
+    "create_recipe-save_recipe": 1,
+    "create_recipe-ser": 4,
+    "create_recipe-src": "a website",
+    "create_recipe-steps_new_recipe-tbl_steps_output__reactable__page": 1,
+    "create_recipe-steps_new_recipe-tbl_steps_output__reactable__pageSize": 50,
+    "create_recipe-steps_new_recipe-tbl_steps_output__reactable__pages": 1,
+    "create_recipe-steps_new_recipe-tbl_steps_output__reactable__selected": null,
+    "create_recipe-steps_new_recipe-tbl_steps_output__reactable__sorted": null,
+    "delete_recipe-delete": 0,
+    "main": "Create recipe",
+    "show_recipe-add_ing": 0,
+    "show_recipe-add_step": 0,
+    "show_recipe-change_ser": 0,
+    "show_recipe-new_ser": null,
+    "show_recipe-update_recipe": 0
+  },
+  "output": {
+    "all_recipes-tbl_recipes": {
+      "message": "There are no recipes in the database!",
+      "call": "NULL",
+      "type": [
+        "shiny.silent.error",
+        "validation"
+      ]
+    },
+    "create_recipe-cat_db": {
+      "html": "<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-cat-label\" for=\"create_recipe-cat\">Choose a category<\/label>\n  <div>\n    <select class=\"shiny-input-select form-control\" id=\"create_recipe-cat\"><option value=\"main\" selected>main<\/option><\/select>\n    <script type=\"application/json\" data-for=\"create_recipe-cat\">{\"create\":true,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n  <\/div>\n<\/div>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.15.2",
+          "src": {
+            "href": "selectize-0.15.2"
+          },
+          "meta": null,
+          "script": [
+            "selectize.min.js",
+            "selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "selectize.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "create_recipe-ingredients_new_recipe-tbl_ing_output": {
+      "x": {
+        "tag": {
+          "name": "Reactable",
+          "attribs": {
+            "data": {
+              "edit": [
+                null,
+                null
+              ],
+              "ingredient": [
+                "tomato",
+                "onion"
+              ],
+              "amount": [
+                4,
+                2
+              ],
+              "unit": [
+                "g",
+                "unit"
+              ],
+              "preparation": [
+                "cut in half",
+                "cut in slices"
+              ],
+              "delete": [
+                null,
+                null
+              ]
+            },
+            "columns": [
+              {
+                "id": "edit",
+                "name": "",
+                "type": "logical",
+                "sortable": false,
+                "cell": [
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "pen-to-square icon",
+                      "style": {
+                        "color": "green"
+                      },
+                      "className": "far fa-pen-to-square fas"
+                    },
+                    "children": [
+
+                    ]
+                  },
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "pen-to-square icon",
+                      "style": {
+                        "color": "green"
+                      },
+                      "className": "far fa-pen-to-square fas"
+                    },
+                    "children": [
+
+                    ]
+                  }
+                ],
+                "width": 25
+              },
+              {
+                "id": "ingredient",
+                "name": "Ingredient",
+                "type": "character",
+                "width": 150
+              },
+              {
+                "id": "amount",
+                "name": "Amount",
+                "type": "numeric",
+                "width": 100
+              },
+              {
+                "id": "unit",
+                "name": "Unit",
+                "type": "character",
+                "width": 75
+              },
+              {
+                "id": "preparation",
+                "name": "Preparation",
+                "type": "character"
+              },
+              {
+                "id": "delete",
+                "name": "",
+                "type": "logical",
+                "sortable": false,
+                "cell": [
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "trash icon",
+                      "style": {
+                        "color": "red"
+                      },
+                      "className": "fas fa-trash fas"
+                    },
+                    "children": [
+
+                    ]
+                  },
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "trash icon",
+                      "style": {
+                        "color": "red"
+                      },
+                      "className": "fas fa-trash fas"
+                    },
+                    "children": [
+
+                    ]
+                  }
+                ],
+                "width": 25
+              }
+            ],
+            "defaultPageSize": 50,
+            "onClick": "function(rowInfo, column) {\n        if (column.id !== 'delete' && column.id !== 'edit') {\n          return\n        }\n        if (window.Shiny && column.id == 'edit') {\n          Shiny.setInputValue('create_recipe-ingredients_new_recipe-row_to_edit_ing' , { index: rowInfo.index + 1 })\n          Shiny.setInputValue('create_recipe-ingredients_new_recipe-edit_ing' , { event: Math.random() })\n        }\n        if (window.Shiny && column.id == 'delete') {\n          Shiny.setInputValue('create_recipe-ingredients_new_recipe-row_to_delete_ing' , { index: rowInfo.index + 1 })\n          Shiny.setInputValue('create_recipe-ingredients_new_recipe-delete_ing' , { event: Math.random() })\n        }\n      }",
+            "highlight": true,
+            "dataKey": "8321a7325a34252330097bdae9ac1f2b",
+            "static": false
+          },
+          "children": [
+
+          ]
+        },
+        "class": "reactR_markup"
+      },
+      "evals": [
+        "tag.attribs.onClick"
+      ],
+      "jsHooks": [
+
+      ],
+      "deps": [
+        {
+          "name": "font-awesome",
+          "version": "6.4.2",
+          "src": {
+            "href": "font-awesome-6.4.2"
+          },
+          "meta": null,
+          "script": null,
+          "stylesheet": [
+            "css/all.min.css",
+            "css/v4-shims.min.css"
+          ],
+          "head": null,
+          "attachment": null,
+          "all_files": true
+        }
+      ]
+    },
+    "create_recipe-new_recipe_add_ing-inputs": {
+      "html": "<h3>Add ingredient<\/h3>\n<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_ing-ing-label\" for=\"create_recipe-new_recipe_add_ing-ing\">Choose an ingredient<\/label>\n  <div>\n    <select class=\"shiny-input-select form-control\" id=\"create_recipe-new_recipe_add_ing-ing\"><option value=\"tomato\">tomato<\/option>\n<option value=\"onion\">onion<\/option>\n<option value=\"potato\">potato<\/option>\n<option value=\"curry\">curry<\/option>\n<option value=\"salt\">salt<\/option><\/select>\n    <script type=\"application/json\" data-for=\"create_recipe-new_recipe_add_ing-ing\">{\"create\":true,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n  <\/div>\n<\/div>\n<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_ing-unit-label\" for=\"create_recipe-new_recipe_add_ing-unit\">Choose an unit<\/label>\n  <div>\n    <select class=\"shiny-input-select form-control\" id=\"create_recipe-new_recipe_add_ing-unit\"><option value=\"unit\">unit<\/option>\n<option value=\"g\">g<\/option>\n<option value=\"teaspon\">teaspon<\/option><\/select>\n    <script type=\"application/json\" data-for=\"create_recipe-new_recipe_add_ing-unit\">{\"create\":true,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n  <\/div>\n<\/div>\n<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_ing-amount-label\" for=\"create_recipe-new_recipe_add_ing-amount\">Amount:<\/label>\n  <input id=\"create_recipe-new_recipe_add_ing-amount\" type=\"number\" class=\"shiny-input-number form-control\"/>\n<\/div>\n<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_ing-prep-label\" for=\"create_recipe-new_recipe_add_ing-prep\">Preparation:<\/label>\n  <input id=\"create_recipe-new_recipe_add_ing-prep\" type=\"text\" class=\"shiny-input-text form-control\"/>\n<\/div>\n<button id=\"create_recipe-new_recipe_add_ing-submit\" type=\"button\" class=\"btn btn-default action-button\">Submit<\/button>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.15.2",
+          "src": {
+            "href": "selectize-0.15.2"
+          },
+          "meta": null,
+          "script": [
+            "selectize.min.js",
+            "selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "selectize.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "create_recipe-new_recipe_add_step-inputs": {
+      "html": "<h3>Add step<\/h3>\n<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_step-step-label\" for=\"create_recipe-new_recipe_add_step-step\">Step order:<\/label>\n  <div>\n    <select class=\"shiny-input-select form-control\" id=\"create_recipe-new_recipe_add_step-step\"><option value=\"1\" selected>1<\/option>\n<option value=\"2\">2<\/option>\n<option value=\"3\">3<\/option>\n<option value=\"4\">4<\/option>\n<option value=\"5\">5<\/option>\n<option value=\"6\">6<\/option>\n<option value=\"7\">7<\/option>\n<option value=\"8\">8<\/option>\n<option value=\"9\">9<\/option>\n<option value=\"10\">10<\/option>\n<option value=\"11\">11<\/option>\n<option value=\"12\">12<\/option>\n<option value=\"13\">13<\/option>\n<option value=\"14\">14<\/option>\n<option value=\"15\">15<\/option>\n<option value=\"16\">16<\/option>\n<option value=\"17\">17<\/option>\n<option value=\"18\">18<\/option>\n<option value=\"19\">19<\/option>\n<option value=\"20\">20<\/option><\/select>\n    <script type=\"application/json\" data-for=\"create_recipe-new_recipe_add_step-step\">{\"create\":true,\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n  <\/div>\n<\/div>\n<div class=\"form-group shiny-input-container\" style=\"width: 100%;\">\n  <label class=\"control-label\" id=\"create_recipe-new_recipe_add_step-desc-label\" for=\"create_recipe-new_recipe_add_step-desc\">Description:<\/label>\n  <textarea id=\"create_recipe-new_recipe_add_step-desc\" class=\"shiny-input-textarea form-control\" style=\"width:100%;height:100%;\"><\/textarea>\n<\/div>\n<button id=\"create_recipe-new_recipe_add_step-submit\" type=\"button\" class=\"btn btn-default action-button\">Submit<\/button>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.15.2",
+          "src": {
+            "href": "selectize-0.15.2"
+          },
+          "meta": null,
+          "script": [
+            "selectize.min.js",
+            "selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "selectize.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "create_recipe-steps_new_recipe-tbl_steps_output": {
+      "x": {
+        "tag": {
+          "name": "Reactable",
+          "attribs": {
+            "data": {
+              "edit": [
+                null,
+                null
+              ],
+              "step": [
+                1,
+                2
+              ],
+              "description": [
+                "The first step",
+                "The second step"
+              ],
+              "delete": [
+                null,
+                null
+              ]
+            },
+            "columns": [
+              {
+                "id": "edit",
+                "name": "",
+                "type": "logical",
+                "sortable": false,
+                "cell": [
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "pen-to-square icon",
+                      "style": {
+                        "color": "green"
+                      },
+                      "className": "far fa-pen-to-square fas"
+                    },
+                    "children": [
+
+                    ]
+                  },
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "pen-to-square icon",
+                      "style": {
+                        "color": "green"
+                      },
+                      "className": "far fa-pen-to-square fas"
+                    },
+                    "children": [
+
+                    ]
+                  }
+                ],
+                "width": 25
+              },
+              {
+                "id": "step",
+                "name": "Step",
+                "type": "numeric",
+                "sortable": true,
+                "width": 75
+              },
+              {
+                "id": "description",
+                "name": "Description",
+                "type": "character"
+              },
+              {
+                "id": "delete",
+                "name": "",
+                "type": "logical",
+                "sortable": false,
+                "cell": [
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "trash icon",
+                      "style": {
+                        "color": "red"
+                      },
+                      "className": "fas fa-trash fas"
+                    },
+                    "children": [
+
+                    ]
+                  },
+                  {
+                    "name": "i",
+                    "attribs": {
+                      "role": "presentation",
+                      "aria-label": "trash icon",
+                      "style": {
+                        "color": "red"
+                      },
+                      "className": "fas fa-trash fas"
+                    },
+                    "children": [
+
+                    ]
+                  }
+                ],
+                "width": 25
+              }
+            ],
+            "defaultPageSize": 50,
+            "onClick": "function(rowInfo, column) {\n        if (column.id !== 'delete' && column.id !== 'edit') {\n          return\n        }\n        if (window.Shiny && column.id == 'edit') {\n          Shiny.setInputValue('create_recipe-steps_new_recipe-row_to_edit_step' , { index: rowInfo.index + 1 })\n          Shiny.setInputValue('create_recipe-steps_new_recipe-edit_step' , { event: Math.random() })\n        }\n        if (window.Shiny && column.id == 'delete') {\n          Shiny.setInputValue('create_recipe-steps_new_recipe-row_to_delete_step' , { index: rowInfo.index + 1 })\n          Shiny.setInputValue('create_recipe-steps_new_recipe-delete_step' , { event: Math.random() })\n        }\n      }",
+            "highlight": true,
+            "dataKey": "5b3af8b8e051afb95afe8e00fbbc01ca",
+            "static": false
+          },
+          "children": [
+
+          ]
+        },
+        "class": "reactR_markup"
+      },
+      "evals": [
+        "tag.attribs.onClick"
+      ],
+      "jsHooks": [
+
+      ],
+      "deps": [
+        {
+          "name": "font-awesome",
+          "version": "6.4.2",
+          "src": {
+            "href": "font-awesome-6.4.2"
+          },
+          "meta": null,
+          "script": null,
+          "stylesheet": [
+            "css/all.min.css",
+            "css/v4-shims.min.css"
+          ],
+          "head": null,
+          "attachment": null,
+          "all_files": true
+        }
+      ]
+    }
+  },
+  "export": {
+    "all_recipes-all_recipes": {
+      "recipe_id": [
+        1
+      ],
+      "recipe_name": [
+        "a test recipe"
+      ],
+      "source": [
+        "a website"
+      ],
+      "servings": [
+        4
+      ],
+      "duration": [
+        "3h"
+      ],
+      "category": [
+        "main"
+      ]
+    },
+    "create_recipe-new_recipe_ing": {
+      "ingredient": [
+        "tomato",
+        "onion"
+      ],
+      "amount": [
+        4,
+        2
+      ],
+      "unit": [
+        "g",
+        "unit"
+      ],
+      "preparation": [
+        "cut in half",
+        "cut in slices"
+      ]
+    },
+    "create_recipe-new_recipe_meta": {
+      "recipe_name": [
+        "a test recipe"
+      ],
+      "source": [
+        "a website"
+      ],
+      "servings": [
+        4
+      ],
+      "duration": [
+        "3h"
+      ],
+      "category": [
+        "main"
+      ]
+    },
+    "create_recipe-new_recipe_steps": {
+      "step": [
+        1,
+        2
+      ],
+      "description": [
+        "The first step",
+        "The second step"
+      ]
+    },
+    "db_tables": [
+      "categories",
+      "ingredients",
+      "ingredients_in_recipes",
+      "recipe_metadata",
+      "sqlite_stat1",
+      "sqlite_stat4",
+      "steps_in_recipes",
+      "units"
+    ]
+  }
+}
