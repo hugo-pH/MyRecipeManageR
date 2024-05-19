@@ -171,6 +171,7 @@ mod_create_recipe_server <- function(id, con, rv) {
           type = "error"
         )
       }
+
       req(nrow(rv_new_recipe$data_all_steps) > 0)
 
       rv_new_recipe$data_meta <- data.frame(
@@ -180,12 +181,14 @@ mod_create_recipe_server <- function(id, con, rv) {
         duration = input$dur,
         category = input$cat
       )
+
       update_database(
-        rv_new_recipe$data_all_ing,
-        rv_new_recipe$data_all_steps,
-        rv_new_recipe$data_meta,
-        con
+        df_ingredients = rv_new_recipe$data_all_ing,
+        df_steps = rv_new_recipe$data_all_steps,
+        df_meta = rv_new_recipe$data_meta,
+        con = con
       )
+
       m <- glue::glue("Recipe {input$name} was added to the database.")
       shinyalert::shinyalert(
         title = "Hooray!",
@@ -193,6 +196,13 @@ mod_create_recipe_server <- function(id, con, rv) {
         type = "success"
       )
       rv$refresh <- stats::rnorm(2)
+
     })
+
+    exportTestValues(
+      new_recipe_ing = rv_new_recipe$data_all_ing,
+      new_recipe_steps = rv_new_recipe$data_all_steps,
+      new_recipe_meta = rv_new_recipe$data_meta
+    )
   })
 }

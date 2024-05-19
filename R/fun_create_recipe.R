@@ -23,7 +23,8 @@ append_table_recipe_metadata <- function(df,
   if (length(cat_id) == 0) {
     df |>
       dplyr::select(category) |>
-      dplyr::copy_to(con, df = _, name = cat_tbl_name, append = TRUE)
+      dplyr::copy_to(con, df = _, name = cat_tbl_name,
+                     append = TRUE, temporary = FALSE)
 
     cat_id <- df_cats |>
       dplyr::filter(category == recipe_cat) |>
@@ -35,7 +36,8 @@ append_table_recipe_metadata <- function(df,
       category_id = cat_id
     ) |>
     dplyr::select(-category) |>
-    dplyr::copy_to(con, df = _, name = meta_tbl_name, append = TRUE)
+    dplyr::copy_to(con, df = _, name = meta_tbl_name,
+                   append = TRUE, temporary = FALSE)
 
   return(nrow(df))
 }
@@ -48,6 +50,7 @@ append_table_ingredients_in_recipe <- function(df_ing,
                                                meta_tbl_name = "recipe_metadata",
                                                ing_tbl_name = "ingredients",
                                                un_tbl_name = "units") {
+
   recipe_id <- df_meta |>
     dplyr::left_join(dplyr::tbl(con, meta_tbl_name),
       by = dplyr::join_by(recipe_name),
@@ -70,17 +73,12 @@ append_table_ingredients_in_recipe <- function(df_ing,
     dplyr::distinct()
 
   if (any(is.na(df_ing_ids$ingredient_id))) {
+    # if an ingredient is not present in the database, add it to the ingredients table
     df_ing_ids |>
       dplyr::filter(is.na(ingredient_id)) |>
       dplyr::select(ingredient) |>
-      dplyr::copy_to(con, df = _, name = ing_tbl_name, append = TRUE)
-
-    df_ing_ids <- df_ing |>
-      dplyr::left_join(df_db_ing,
-        by = dplyr::join_by(ingredient),
-        copy = TRUE
-      ) |>
-      dplyr::select(ingredient, ingredient_id)
+      dplyr::copy_to(con, df = _, name = ing_tbl_name,
+                     append = TRUE, temporary = FALSE)
   }
 
   df_db_un <- dplyr::tbl(con, un_tbl_name)
@@ -94,34 +92,35 @@ append_table_ingredients_in_recipe <- function(df_ing,
     dplyr::distinct()
 
   if (any(is.na(df_unit_ids$unit_id))) {
+    # if an unit is not present in the database, add it to the units table
     df_unit_ids |>
       dplyr::filter(is.na(unit_id)) |>
       dplyr::select(unit) |>
-      dplyr::copy_to(con, df = _, name = un_tbl_name, append = TRUE)
+      dplyr::copy_to(con, df = _, name = un_tbl_name,
+                     append = TRUE, temporary = FALSE)
 
-    df_unit_ids <- df_ing |>
-      dplyr::left_join(df_db_un,
-        by = dplyr::join_by(unit),
-        copy = TRUE
-      ) |>
-      dplyr::select(unit, unit_id)
   }
 
-  df_ing |>
-    dplyr::left_join(df_unit_ids,
+  df_to_db <- df_ing |>
+    dplyr::left_join(df_db_un,
       by = dplyr::join_by(unit),
+      copy = TRUE,
       relationship = "many-to-one"
     ) |>
     dplyr::select(-unit) |>
-    dplyr::left_join(df_ing_ids,
+    dplyr::left_join(df_db_ing,
       by = dplyr::join_by(ingredient),
+      copy = TRUE,
       relationship = "many-to-one"
     ) |>
     dplyr::select(-ingredient) |>
     dplyr::mutate(
       recipe_id = recipe_id
     ) |>
-    dplyr::copy_to(con, df = _, name = ing_rec_tbl_name, append = TRUE)
+    dplyr::collect()
+
+    dplyr::copy_to(con, df = df_to_db, name = ing_rec_tbl_name,
+                   append = TRUE, temporary = FALSE)
 
   return(nrow(df_ing))
 }
@@ -145,7 +144,8 @@ append_table_steps_in_recipe <- function(df_steps,
     dplyr::mutate(
       recipe_id = recipe_id
     ) |>
-    dplyr::copy_to(con, df = _, name = st_rec_tbl_name, append = TRUE)
+    dplyr::copy_to(con, df = _, name = st_rec_tbl_name,
+                   append = TRUE, temporary = FALSE)
 
   return(nrow(df_steps))
 }
