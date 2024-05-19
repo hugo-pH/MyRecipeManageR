@@ -104,6 +104,11 @@ mod_choose_recipe_server <- function(id, con, rv) {
         dplyr::pull(recipe_id)
     })
 
+    exportTestValues(
+      all_recipes = all_recipes() |>
+        dplyr::select(-created_on)
+    )
+
     return(rv)
   })
 }

@@ -23,7 +23,7 @@ populate_ingredients <- function(df, tbl_name, con) {
 
     dplyr::copy_to(con,
       df = df, name = tbl_name,
-      append = TRUE
+      append = TRUE, temporary = TRUE
     )
   } else {
     df_to_db <- df |>
@@ -35,7 +35,7 @@ populate_ingredients <- function(df, tbl_name, con) {
       dplyr::distinct(ingredient) |>
       dplyr::copy_to(con,
         df = _, name = tbl_name,
-        append = TRUE
+        append = TRUE, temporary = TRUE
       )
   }
 }
@@ -53,7 +53,7 @@ populate_units <- function(df, tbl_name, con) {
 
     dplyr::copy_to(con,
       df = df, name = tbl_name,
-      append = TRUE
+      append = TRUE, temporary = TRUE
     )
   } else {
     df_to_db <- df |>
@@ -70,7 +70,7 @@ populate_units <- function(df, tbl_name, con) {
       dplyr::distinct(unit) |>
       dplyr::copy_to(con,
         df = _, name = tbl_name,
-        append = TRUE
+        append = TRUE, temporary = TRUE
       )
   }
 }
@@ -88,7 +88,7 @@ populate_categories <- function(df, tbl_name, con) {
 
     dplyr::copy_to(con,
       df = df, name = tbl_name,
-      append = TRUE
+      append = TRUE, temporary = TRUE
     )
   } else {
     df_to_db <- df |>
@@ -105,7 +105,7 @@ populate_categories <- function(df, tbl_name, con) {
       dplyr::distinct(category) |>
       dplyr::copy_to(con,
         df = _, name = tbl_name,
-        append = TRUE
+        append = TRUE, temporary = TRUE
       )
   }
 }
@@ -132,7 +132,7 @@ populate_recipe_metadata <- function(name, df, tbl_name, con) {
 
     dplyr::copy_to(con,
       df = df, name = tbl_name,
-      append = TRUE
+      append = TRUE, temporary = TRUE
     )
   } else {
     df_to_db <- df |>
@@ -146,7 +146,7 @@ populate_recipe_metadata <- function(name, df, tbl_name, con) {
       ) |>
       dplyr::copy_to(con,
         df = _, name = tbl_name,
-        append = TRUE
+        append = TRUE, temporary = TRUE
       )
   }
 }
